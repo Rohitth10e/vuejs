@@ -1,0 +1,3 @@
+[submodule "job-app"]
+	path = job-app
+	url = https://github.com/rohitth10e/job-app.git
