@@ -1,53 +1,38 @@
 <script setup>
-import { computed,onMounted } from "vue";
-import { useStore } from "vuex";
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
 const store = useStore();
 
-const count = computed(() => store.state.count);
-const isLiked = computed(() => store.state.isLiked);
-const isReset = computed(() => store.state.isReset);
-const message = computed(() => store.getters.statusMessage);
-const doubleCount = computed(() => store.getters.doubleCount);
-const greetingMessage = computed(() => store.getters.greetingMessage);
-const isAdult = computed(() => store.getters.isAdult);
+const count = computed(() => store.state.counter.count);
+const name = computed(() => store.getters['user/name']);
+const username = computed(() => store.getters['user/username']);
 
-const name = computed(()=>store.state.user.name);
+const increment = () => {
+  store.commit("counter/increment");
+};
+
+const decrement = () => {
+  store.commit("counter/decrement");
+};
 
 onMounted(()=>{
-  store.dispatch('fetchUser')
+  store.dispatch('user/fetchUser');
 })
 
-
-const like = () => {
-  store.commit("like");
-};
-
-const reset = () => {
-  store.commit("reset");
-};
+const doubleCount = computed(() => store.getters["counter/doubleCount"]);
 </script>
 
 <template>
   <div>
-    <p class="count-txt">{{ count }}</p>
-    <p>{{ message }}</p>
-    <p>{{ doubleCount }}</p>
-    <p>{{ greetingMessage }}</p>
-    <p>{{ isAdult }}</p>
-    <div>
-      <p v-if="isLiked">User liked</p>
-      <p v-else>User disliked</p>
-      <button @click="like">
-        {{ isLiked ? "unlike" : "like" }}
-      </button>
-      <button @click="reset">reset</button>
-    </div>
-
-    <div>
-      <h1>Hello {{ name }}</h1>
-    </div>
-
+    <h3 class="count-txt">Count: {{ count }}</h3>
+    <h3 class="count-txt">Double: {{ doubleCount }}</h3>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+  </div>
+  <div class="user-container"> 
+    <p>{{ name }}</p>
+    <p>@{{ username }}</p>
   </div>
 </template>
 
